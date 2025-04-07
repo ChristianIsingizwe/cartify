@@ -1,6 +1,6 @@
 package com.projects.cartify.services.products;
 
-import com.projects.cartify.exceptions.ProductNotFoundException;
+import com.projects.cartify.exceptions.ResourceNotFoundException;
 import com.projects.cartify.models.Category;
 import com.projects.cartify.models.Product;
 import com.projects.cartify.repository.CategoryRepository;
@@ -46,14 +46,14 @@ public class ProductService implements IProductService{
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
     @Override
     public void deleteProductById(Long id) {
         productRepository.findById(id)
                 .ifPresentOrElse(productRepository::delete,
-                        () -> {throw new ProductNotFoundException("Product not found");});
+                        () -> {throw new ResourceNotFoundException("Product not found");});
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ProductService implements IProductService{
         return productRepository.findById(id)
                 .map(existingProduct -> updateExistingProduct(existingProduct, request))
                 .map(productRepository::save)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
     private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request){
