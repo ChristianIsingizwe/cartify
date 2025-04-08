@@ -67,4 +67,7 @@ public class ProductController {
         }
     }
 
+    public ResponseEntity<ApiResponse> getProductByBrandAndName(@PathVariable String brandName, @PathVariable String productName) {
+
+    }
 }
