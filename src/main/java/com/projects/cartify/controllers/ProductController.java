@@ -27,8 +27,8 @@ public class ProductController {
         return ResponseEntity.ok(new ApiResponse("success", products));
     }
 
-    @GetMapping("/product/${productId}")
-    public ResponseEntity<ApiResponse> getProductById(Long id) {
+    @GetMapping("/product/{id}")
+    public ResponseEntity<ApiResponse> getProductById(@PathVariable  Long id) {
         try {
             Product product = productService.getProductById(id);
             return ResponseEntity.ok(new ApiResponse("success", product));
@@ -47,6 +47,7 @@ public class ProductController {
         }
     }
 
+    @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse> updateProduct(@PathVariable Long id, @RequestBody ProductUpdateRequest request) {
         try {
             Product updatedProduct = productService.updateProduct(request, id);
@@ -55,4 +56,15 @@ public class ProductController {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("error", NOT_FOUND));
         }
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long id) {
+        try {
+            productService.deleteProductById(id);
+            return ResponseEntity.ok(new ApiResponse("Product deleted successfully", id));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("error", NOT_FOUND));
+        }
+    }
+
 }
